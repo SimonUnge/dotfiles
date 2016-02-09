@@ -1,0 +1,7 @@
+new -s Tail-F -n RT
+splitw -h -p 60
+splitw -v
+new-window -n Dev
+new-window
+select-window -t 1
+selectp -t 0
