@@ -1,5 +1,5 @@
 (setq org-todo-keywords
-      '((sequence "TODO" "DEFINED" "|" "ONGOING" "COMPLETE" "ACCEPTED")))
+      '((sequence "TODO" "DEFINED" "PAUSED" "|" "ONGOING" "COMPLETE" "ACCEPTED")))
 
 (setq org-agenda-files
       (list "~/git/PO/"))
