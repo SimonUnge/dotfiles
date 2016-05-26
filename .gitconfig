@@ -5,7 +5,7 @@
     excludesfile = ~/git/git-bootstrap/.gitignore_global
 
 [user]
-	email = su@tail-f.com
+	email = sunge@cisco.com
         name = Simon Unge
 [push]
 	default = simple
@@ -14,6 +14,6 @@ glog  = log --graph --abbrev-commit --pretty=oneline
 logf  = log --name-status
 lol   = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 lola  = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative --all
-uno   = status -uno --ignore-submodules
+uno   = status -uno
 ggrep = !git grep -n --break --heading
 l     = log --date-order --date='format:%y-%m-%d %H:%M' --pretty='format:%x09%C(reverse green)%><(9)%h%C(reset) %C(bold black)%cd%C(reset) %C(bold black)%<(3,trunc)%cN%C(reset) %C(magenta)%<(14,trunc)%aN%C(reset) %s%C(yellow)%d%C(reset) %N'
