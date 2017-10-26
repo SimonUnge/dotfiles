@@ -52,9 +52,7 @@ source $ZSH/oh-my-zsh.sh
 # User configuration
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 PATH=$PATH:~/work/scripts
-PATH=$PATH:~/git/sugit
 PATH=$PATH:~/git/tailf-doc-tools/bin
-export GIT_SVN_REBASE=~/git/git-svn-rebase
 export DEV_SUPPORT_HOME="/home/su/git/dev-support"
 export PATH="$DEV_SUPPORT_HOME/bin:$PATH"
 export NO_TAILF_MAN=yes
