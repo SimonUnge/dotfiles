@@ -1,6 +1,7 @@
 (cd "~/")
 (menu-bar-mode -1)
 (setq backup-directory-alist `(("." . "~/.emacs.d/.saves")))
+(setq create-lockfiles nil)
 
 (load-file "~/.emacs.d/simon-tail-f.el")
 
@@ -75,11 +76,22 @@
           (lambda
             ()
             (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
-
 (add-hook 'org-mode-hook
           (lambda
             ()
-            (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
+            (add-to-list 'write-file-functions
+                         'delete-trailing-whitespace)))
+(add-hook 'python-mode-hook
+          (lambda
+            ()
+            (add-to-list 'write-file-functions
+                         'delete-trailing-whitespace)))
+
+(add-hook 'python-mode-hook (lambda ()
+                              (interactive) (column-marker-1 80)))
+(add-hook 'erlang-mode-hook (lambda ()
+                              (interactive) (column-marker-1 80)))
+
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -110,3 +122,9 @@
 (show-paren-mode t)
 (column-number-mode t)
 (ido-mode t)
+(electric-indent-mode -1)
+
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+                `((".*" ,temporary-file-directory t)))
