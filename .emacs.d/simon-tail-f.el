@@ -3,7 +3,7 @@
 ;; In the same directory as this file resides we expect
 ;; two subdirectories: yang and erlang. These will be added to the load path
 (setq tailf-modes "~/git/trunk/devel_support/lib/emacs/")
-(add-to-list 'load-path (concat tailf-modes "erlang"))
+;;(add-to-list 'load-path (concat tailf-modes "erlang"))
 (add-to-list 'load-path (concat tailf-modes "relaxng"))
 (add-to-list 'load-path (concat tailf-modes "yang"))
 (add-to-list 'load-path (concat tailf-modes "lux"))

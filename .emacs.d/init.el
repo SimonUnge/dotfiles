@@ -13,6 +13,10 @@
  '("melpa" . "http://melpa.milkbox.net/packages/")
  t)
 
+(require 'whitespace)
+(setq whitespace-style '(face empty tabs lines-tail trailing))
+(global-whitespace-mode t)
+
 ;; (defvar my-packages '(starter-kit
 ;;                       starter-kit-lisp
 ;;                       starter-kit-bindings
@@ -87,10 +91,10 @@
             (add-to-list 'write-file-functions
                          'delete-trailing-whitespace)))
 
-(add-hook 'python-mode-hook (lambda ()
-                              (interactive) (column-marker-1 80)))
-(add-hook 'erlang-mode-hook (lambda ()
-                              (interactive) (column-marker-1 80)))
+;; (add-hook 'python-mode-hook (lambda ()
+;;                               (interactive) (column-marker-1 80)))
+;; (add-hook 'erlang-mode-hook (lambda ()
+;;                               (interactive) (column-marker-1 80)))
 
 
 (custom-set-variables
@@ -99,7 +103,10 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(Man-notify-method (quote pushy))
- '(org-agenda-files (quote ("~/git/PO/backlog.org" "/home/su/git/PO/retrospectives.org"))))
+ '(org-agenda-files
+   (quote
+    ("~/git/PO/backlog.org" "/home/su/git/PO/retrospectives.org")) t)
+ '(package-selected-packages (quote (erlang yaml-mode mew yasnippet))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -120,7 +127,7 @@
   (edit-server-start))
 
 (show-paren-mode t)
-(column-number-mode t)
+;; (column-number-mode t)
 (ido-mode t)
 (electric-indent-mode -1)
 
