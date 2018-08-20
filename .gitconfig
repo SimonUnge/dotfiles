@@ -1,8 +1,8 @@
-[include]
-    path = ~/git/git-bootstrap/.gitconfig
+# [include]
+#     path = ~/git/git-bootstrap/.gitconfig
 
-[core]
-    excludesfile = ~/git/git-bootstrap/.gitignore_global
+# [core]
+#     excludesfile = ~/git/git-bootstrap/.gitignore_global
 
 [user]
 	email = sunge@cisco.com
