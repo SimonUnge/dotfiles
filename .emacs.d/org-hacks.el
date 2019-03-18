@@ -1,13 +1,14 @@
 (setq org-todo-keywords
-      '((sequence "TODO" "DEFINED" "PAUSED" "|" "ONGOING" "COMPLETE"
-      "ACCEPTED" "DONE")))
+      '((sequence "TODO" "ONGOING" "PAUSED" "|" "DONE")))
 
 (setq org-agenda-files
-      (list "~/git/PO/"))
+      (list "~/ORG/notes/"
+            "~/ORG/todo/"
+            "~/ORG/schedule"))
 
-(setq org-display-custom-times t)
-(setq org-time-stamp-custom-formats
-      (quote ("<%y%m%d>" . "<%A, %B %d, %Y -- %I:%M %p>")))
+;; (setq org-display-custom-times t)
+;; (setq org-time-stamp-custom-formats
+;;       (quote ("<%y%m%d>" . "<%A, %B %d, %Y -- %I:%M %p>")))
 
 (defun org-show-current-heading-tidily ()
   "Show next entry, keeping other entries closed."
@@ -27,3 +28,7 @@
 (add-hook 'org-mode-hook
           (lambda ()
             (local-set-key (kbd "C-c C-b") 'org-mark-ring-goto)))
+
+(define-key global-map "\C-cl" 'org-store-link)
+(define-key global-map "\C-ca" 'org-agenda)
+(setq org-log-done t)

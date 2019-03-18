@@ -1,7 +1,7 @@
-new -s Tail-F -n RT
+new -s Tail-F -n DEV
 splitw -h -p 60
 splitw -v
-new-window -n Dev
+new-window -n MAIL
 new-window
 select-window -t 1
 selectp -t 0

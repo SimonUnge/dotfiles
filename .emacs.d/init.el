@@ -91,8 +91,8 @@
             (add-to-list 'write-file-functions
                          'delete-trailing-whitespace)))
 
-;; (add-hook 'python-mode-hook (lambda ()
-;;                               (interactive) (column-marker-1 80)))
+(add-hook 'python-mode-hook (lambda ()
+                              (auto-fill-mode 0)))
 ;; (add-hook 'erlang-mode-hook (lambda ()
 ;;                               (interactive) (column-marker-1 80)))
 
@@ -103,10 +103,10 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(Man-notify-method (quote pushy))
- '(org-agenda-files
+ '(org-agenda-files nil)
+ '(package-selected-packages
    (quote
-    ("~/git/PO/backlog.org" "/home/su/git/PO/retrospectives.org")) t)
- '(package-selected-packages (quote (erlang yaml-mode mew yasnippet))))
+    (buffer-expose groovy-mode elixir-mode elixir-yasnippets py-autopep8 idomenu pylint erlang yaml-mode mew))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -135,3 +135,5 @@
       `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms
                 `((".*" ,temporary-file-directory t)))
+
+(setq jiralib-url "https://jira-eng-gpk3.cisco.com/jira")

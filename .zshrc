@@ -45,7 +45,8 @@ DISABLE_AUTO_TITLE="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(per-directory-history git svn zsh-syntax-highlighting rebar jump z colored-man-pages thefuck)
+plugins=(per-directory-history git svn zsh-syntax-highlighting rebar
+         jump z colored-man-pages zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -69,11 +70,12 @@ export ALTERNATE_EDITOR=""
 # ssh
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
 
-if ! ps aux |grep $(whoami) |grep ssh-agent |grep -v grep >/dev/null; then ssh-agent ; fi
+#if ! ps aux |grep $(whoami) |grep ssh-agent |grep -v grep >/dev/null; then ssh-agent ; fi
 
 # Link the latest ssh-agent socket
-ln -sf $(find /tmp -maxdepth 2 -type s -name "agent*" -user $USER -printf '%T@ %p\n' 2>/dev/null |sort -n|tail -1|cut -d' ' -f2) ~/.ssh/ssh_auth_sock
-
-export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock
+#ln -sf $(find /tmp -maxdepth 2 -type s -name "agent*" -user $USER -printf '%T@ %p\n' 2>/dev/null |sort -n|tail -1|cut -d' ' -f2) ~/.ssh/ssh_auth_sock
 
 LC_ALL=en_US.UTF-8
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE=fg=6
+
+export HOSTNAME=$(hostname)
