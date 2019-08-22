@@ -17,31 +17,9 @@
 (setq whitespace-style '(face empty tabs lines-tail trailing))
 (global-whitespace-mode t)
 
-;; (defvar my-packages '(starter-kit
-;;                       starter-kit-lisp
-;;                       starter-kit-bindings
-;;                       starter-kit-eshell
-;;                       clojure-mode
-;;                       clojure-test-mode
-;;                       nrepl))
-
-;; (dolist (p my-packages)
-;;   (when (not (package-installed-p p))
-;;     (package-install p)))
-
 (load-file "~/.emacs.d/yang-snippet.el")
 
 (load-file "~/.emacs.d/org-hacks.el")
-
-;; (setq org-todo-keywords
-;;       '((sequence "TODO" "ONGOING" "|" "DONE" "PAUSED" "CANCELED")))
-
-;; (setq org-agenda-files
-;;       (list "~/git/PO/"))
-
-;; (setq org-display-custom-times t)
-;; (setq org-time-stamp-custom-formats
-;;       (quote ("<%y%m%d>" . "<%A, %B %d, %Y -- %I:%M %p>")))
 
 (defalias 'list-buffers 'ibuffer)
 (setq ibuffer-saved-filter-groups
@@ -103,10 +81,10 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(Man-notify-method (quote pushy))
- '(org-agenda-files nil)
+ '(org-agenda-files nil t)
  '(package-selected-packages
    (quote
-    (buffer-expose groovy-mode elixir-mode elixir-yasnippets py-autopep8 idomenu pylint erlang yaml-mode mew))))
+    (gruvbox-theme iedit tabbar helm project-explorer rainbow-delimiters projectile rainbow-identifiers rainbow-mode plantuml-mode docbook-snippets docbook buffer-expose groovy-mode elixir-mode elixir-yasnippets py-autopep8 idomenu pylint erlang yaml-mode mew))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -137,3 +115,7 @@
                 `((".*" ,temporary-file-directory t)))
 
 (setq jiralib-url "https://jira-eng-gpk3.cisco.com/jira")
+
+(projectile-mode +1)
+(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
