@@ -5,8 +5,9 @@
 #     excludesfile = ~/git/git-bootstrap/.gitignore_global
 
 [user]
-	email = sunge@cisco.com
-        name = Simon Unge
+	name = Simon Unge
+	email = simunge@amazon.com
+
 [push]
 	default = simple
 [alias]
