@@ -92,9 +92,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(Man-notify-method 'pushy)
- '(org-agenda-files nil)
+ '(org-agenda-files nil t)
  '(package-selected-packages
-   '(format-all org-tree-slide which-key helm-lsp lsp-origami lsp-ui yasnippet lsp-mode markdown-mode ag magit gruvbox-theme iedit tabbar helm project-explorer rainbow-delimiters projectile rainbow-identifiers rainbow-mode plantuml-mode docbook-snippets docbook buffer-expose groovy-mode elixir-mode elixir-yasnippets py-autopep8 idomenu pylint erlang yaml-mode mew)))
+   '(go-mode format-all org-tree-slide which-key helm-lsp lsp-origami lsp-ui yasnippet lsp-mode markdown-mode ag magit gruvbox-theme iedit tabbar helm project-explorer rainbow-delimiters projectile rainbow-identifiers rainbow-mode plantuml-mode docbook-snippets docbook buffer-expose groovy-mode elixir-mode elixir-yasnippets py-autopep8 idomenu pylint erlang yaml-mode mew)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -149,3 +149,6 @@
   (define-key org-tree-slide-mode-map (kbd "<f9>") 'org-tree-slide-move-previous-tree)
   (define-key org-tree-slide-mode-map (kbd "<f10>") 'org-tree-slide-move-next-tree)
   )
+;; ;; ## added by OPAM user-setup for emacs / base ## 56ab50dc8996d2bb95e7856a6eddb17b ## you can edit, but keep this line
+;; (require 'opam-user-setup "~/.emacs.d/opam-user-setup.el")
+;; ;; ## end of OPAM user-setup addition for emacs / base ## keep this line
