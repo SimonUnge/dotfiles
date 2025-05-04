@@ -239,6 +239,10 @@ Does nothing if a session is already running."
             (define-key map (kbd "C-c q f") 'amazon-q-ask-about-current-function)
             map))
 
+(define-globalized-minor-mode global-amazon-q-mode
+  amazon-q-mode
+  (lambda () (amazon-q-mode 1)))
+
 ;; Add hook to clean up temp files when Emacs exits
 (add-hook 'kill-emacs-hook 'amazon-q-cleanup-temp-files)
 
