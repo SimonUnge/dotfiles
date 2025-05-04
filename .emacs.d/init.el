@@ -24,6 +24,8 @@
 ;; (load-file "~/.emacs.d/yang-snippet.el")
 
 (load-file "~/.emacs.d/org-hacks.el")
+(load-file "~/.emacs.d/q-chat.el")
+(amazon-q-mode 1)
 
 ;;erlang mode: indent 4
 (autoload 'erlang-mode "erlang" "Major mode for editing Erlang code." t)
@@ -92,7 +94,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(Man-notify-method 'pushy)
- '(org-agenda-files nil t)
+ '(org-agenda-files nil)
  '(package-selected-packages
    '(format-all org-tree-slide which-key helm-lsp lsp-origami lsp-ui yasnippet lsp-mode markdown-mode ag magit gruvbox-theme iedit tabbar helm project-explorer rainbow-delimiters projectile rainbow-identifiers rainbow-mode plantuml-mode docbook-snippets docbook buffer-expose groovy-mode elixir-mode elixir-yasnippets py-autopep8 idomenu pylint erlang yaml-mode mew)))
 (custom-set-faces
