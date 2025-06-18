@@ -19,13 +19,12 @@
 
 ;; Load core modules
 (require 'init-packages)  ;; Must be loaded first to set up use-package
+(require 'init-env)
 (require 'init-ui)
 (require 'init-editing)
 (require 'init-erlang)
 (require 'init-org)
 (require 'init-amazon-q)
-
-
 
 ;; Custom variables - kept in init.el
 (custom-set-variables
@@ -36,7 +35,7 @@
  '(Man-notify-method 'pushy)
  '(org-agenda-files nil)
  '(package-selected-packages
-   '(use-package format-all org-tree-slide which-key helm-lsp lsp-origami lsp-ui yasnippet lsp-mode markdown-mode ag magit gruvbox-theme iedit tabbar helm project-explorer rainbow-delimiters projectile rainbow-identifiers rainbow-mode plantuml-mode docbook-snippets docbook buffer-expose groovy-mode elixir-mode elixir-yasnippets py-autopep8 idomenu pylint erlang yaml-mode mew)))
+   '(exec-path-from-shell use-package format-all org-tree-slide which-key helm-lsp lsp-origami lsp-ui yasnippet lsp-mode markdown-mode ag magit gruvbox-theme iedit tabbar helm project-explorer rainbow-delimiters projectile rainbow-identifiers rainbow-mode plantuml-mode docbook-snippets docbook buffer-expose groovy-mode elixir-mode elixir-yasnippets py-autopep8 idomenu pylint erlang yaml-mode mew)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
