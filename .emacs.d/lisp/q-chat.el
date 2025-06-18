@@ -1,13 +1,10 @@
 ;;; q-chat.el --- Amazon Q integration for Emacs -*- lexical-binding: t -*-
 ;; Author: Simon Unge
-;; Version: 2.0
+;; Version: 1.0
 ;; Package-Requires: ((emacs "27.1"))
 ;; Keywords: tools, convenience
-
 ;;; Commentary:
 ;; This package provides integration with Amazon Q chat from Emacs.
-;; Uses amz-q-chat as the underlying engine for better terminal handling
-;; and session management.
 ;;
 ;; Amazon Q is an AI assistant from AWS that can help with coding tasks,
 ;; answer questions, and provide guidance on various programming topics.
@@ -35,104 +32,197 @@
 ;; Note: This package requires the Amazon Q CLI to be installed and configured
 ;; on your system. Run 'q chat' in a terminal to verify it works before using
 ;; this package.
-
 ;;; Code:
 
-(require 'amz-q-chat)
+(defvar amazon-q--temp-files nil
+  "List of temporary files created by Amazon Q functions.")
 
 (defun amazon-q-interactive ()
-  "Start an interactive Amazon Q session using amz-q-chat engine."
+  "Start an interactive Amazon Q session in a shell buffer.
+Does nothing if a session is already running."
   (interactive)
-  (let ((session (amz-q-chat-session-from-context)))
-    (amz-q-chat-run session)))
-
-(defun amazon-q--get-buffer ()
-  "Get the Q chat buffer, creating session if needed."
-  (let ((session (amz-q-chat-session-from-context)))
-    (or (amz-q-chat-session-buffer session)
-        (amz-q-chat-start session))))
-
-(defun amazon-q--send-content (content &optional prefix)
-  "Send CONTENT to Q chat buffer with optional PREFIX message."
-  (let ((q-buffer (amazon-q--get-buffer)))
-    (with-current-buffer q-buffer
-      (goto-char (point-max))
-      (when prefix
-        (insert prefix)
-        (term-send-input))
-      (insert content)
-      (term-send-input)
-      (funcall amz-q-chat-popup-function q-buffer))))
+  (if (get-buffer "*Amazon Q Interactive*")
+      (message "Amazon Q session already exists")
+    (let ((shell-buffer (shell "*Amazon Q Interactive*")))
+      (with-current-buffer shell-buffer
+        (goto-char (point-max))
+        (insert "q chat")
+        (comint-send-input)))))
 
 (defun amazon-q-send-buffer ()
-  "Send the current buffer content to Amazon Q chat session."
+  "Send the current buffer content to an existing Amazon Q chat session."
   (interactive)
   (let ((buffer-content (buffer-substring-no-properties (point-min) (point-max)))
-        (buffer-name (buffer-name)))
-    (amazon-q--send-content
-     buffer-content
-     (format "Here's my code from buffer %s:" buffer-name))))
+        (q-buffer "*Amazon Q Interactive*"))
+    ;; Check if Amazon Q session exists
+    (if (get-buffer q-buffer)
+        (with-current-buffer q-buffer
+          ;; Go to the end of the buffer
+          (goto-char (point-max))
+          ;; Insert a message indicating what we're sending
+          (insert (format "Here's my code from buffer %s:" (buffer-name (current-buffer))))
+          (comint-send-input)
+          ;; Insert the buffer content
+          (insert buffer-content)
+          (comint-send-input)
+          ;; Switch to the Q buffer
+          (pop-to-buffer q-buffer))
+      ;; If no session exists, show warning
+      (message "No Amazon Q session found. Please run amazon-q-interactive first."))))
 
 (defun amazon-q-send-file-path ()
-  "Send the file path of the current buffer to Amazon Q chat session."
+  "Send the file path of the current buffer to an existing Amazon Q chat session."
   (interactive)
-  (let ((file-path (buffer-file-name)))
+  (let ((file-path (buffer-file-name))
+        (q-buffer "*Amazon Q Interactive*"))
+    ;; Check if the buffer is visiting a file
     (if file-path
-        (amazon-q--send-content
-         (format "Read this file and wait for further instructions: %s" file-path))
+        (if (get-buffer q-buffer)
+            (with-current-buffer q-buffer
+              ;; Go to the end of the buffer
+              (goto-char (point-max))
+              ;; Insert the file path
+              (insert (format "Read this file and wait for further instructions: %s" file-path))
+              (comint-send-input)
+              ;; Switch to the Q buffer
+              (pop-to-buffer q-buffer))
+          ;; If no session exists, just show warning
+          (message "No Amazon Q session found. Please run amazon-q-interactive first."))
       (message "Buffer is not visiting a file"))))
 
 (defun amazon-q-send-region ()
-  "Send the selected region to Amazon Q chat session."
+  "Send the selected region to a temp file and instruct Amazon Q to read it."
   (interactive)
   (if (use-region-p)
-      (let ((region-content (buffer-substring-no-properties (region-beginning) (region-end))))
-        (amazon-q--send-content
-         region-content
-         "Here's the code I want to discuss:"))
+      (let ((q-buffer "*Amazon Q Interactive*")
+            (region-content (buffer-substring-no-properties (region-beginning) (region-end)))
+            (temp-file (make-temp-file "amazon-q-content-" nil ".txt")))
+        ;; Track the temp file
+        (push temp-file amazon-q--temp-files)
+        ;; Write region content to temp file
+        (with-temp-file temp-file
+          (insert region-content))
+        ;; Check if Amazon Q session exists
+        (if (get-buffer q-buffer)
+            (with-current-buffer q-buffer
+              ;; Go to the end of the buffer
+              (goto-char (point-max))
+              ;; Insert the instruction to read the file
+              (insert (format "Read this file in silence and await follow up question: %s" temp-file))
+              (comint-send-input)
+              ;; Switch to the Q buffer
+              (pop-to-buffer q-buffer))
+          ;; If no session exists, just show warning
+          (message "No Amazon Q session found. Please run amazon-q-interactive first.")))
     (message "No region selected")))
 
 (defun amazon-q-ask-question (question)
-  "Ask Amazon Q a specific question about the current buffer or region."
+  "Ask Amazon Q a specific question about the current buffer or region using a temp file."
   (interactive "sQuestion for Amazon Q: ")
-  (let ((content (if (use-region-p)
+  (let ((q-buffer "*Amazon Q Interactive*")
+        (content (if (use-region-p)
                      (buffer-substring-no-properties (region-beginning) (region-end))
-                   (buffer-substring-no-properties (point-min) (point-max)))))
-    (amazon-q--send-content
-     (format "%s\n\n%s" content question)
-     "Please review this code and answer my question:")))
+                   (buffer-substring-no-properties (point-min) (point-max))))
+        (temp-file (make-temp-file "amazon-q-content-" nil ".txt")))
+    ;; Track the temp file
+    (push temp-file amazon-q--temp-files)
+    ;; Write content to temp file
+    (with-temp-file temp-file
+      (insert content))
+    ;; Check if Q session exists
+    (if (get-buffer q-buffer)
+        (with-current-buffer q-buffer
+          ;; Go to the end of the buffer
+          (goto-char (point-max))
+          ;; Send a combined instruction to read the file and answer the question
+          (insert (format "Read this file: %s and answer this question: %s" temp-file question))
+          (comint-send-input)
+          ;; Switch to the Q buffer
+          (pop-to-buffer q-buffer))
+      ;; If no session exists, just show warning
+      (message "No Amazon Q session found. Please run amazon-q-interactive first."))))
 
 (defun amazon-q-review-diff ()
-  "Send git diff to Amazon Q for code review suggestions."
+  "Send git diff to Amazon Q for code review suggestions asynchronously."
   (interactive)
-  (let ((diff-output (shell-command-to-string "git diff")))
-    (if (string-empty-p (string-trim diff-output))
-        (message "No changes to review")
-      (amazon-q--send-content
-       diff-output
-       "Please review this git diff and suggest improvements:"))))
+  (let ((temp-file (make-temp-file "amazon-q-diff-" nil ".txt"))
+        (q-buffer "*Amazon Q Interactive*"))
+    ;; Track the temp file
+    (push temp-file amazon-q--temp-files)
+    ;; Show a message that we're starting
+    (message "Running git diff asynchronously...")
+    ;; Run git diff asynchronously
+    (make-process
+     :name "amazon-q-git-diff"
+     :buffer nil
+     :command (list "git" "diff")
+     :connection-type 'pipe
+     :filter (lambda (proc string)
+               (with-temp-file temp-file
+                 (insert string)))
+     :sentinel (lambda (proc event)
+                 (when (string= (string-trim event) "finished")
+                   (if (= 0 (file-attribute-size (file-attributes temp-file)))
+                       (message "No changes to review")
+                     (progn
+                       (message "Git diff completed, sending to Amazon Q...")
+                       (if (get-buffer q-buffer)
+                           (with-current-buffer q-buffer
+                             (goto-char (point-max))
+                             (insert (format "Review this git diff and suggest improvements: %s" temp-file))
+                             (comint-send-input)
+                             (pop-to-buffer q-buffer))
+                         (message "No Amazon Q session found. Please run amazon-q-interactive first.")))))))))
 
 (defun amazon-q-save-conversation ()
   "Save the current Amazon Q conversation to a file."
   (interactive)
   (let ((file (read-file-name "Save conversation to: "))
-        (q-buffer (amazon-q--get-buffer)))
-    (when q-buffer
+        (q-buffer "*Amazon Q Interactive*"))
+    (when (get-buffer q-buffer)
       (with-current-buffer q-buffer
-        (write-region (point-min) (point-max) file)
-        (message "Conversation saved to %s" file)))))
+        (write-region (point-min) (point-max) file)))))
+
+(defun amazon-q-cleanup-temp-files ()
+  "Delete temporary files created by Amazon Q functions."
+  (interactive)
+  (dolist (file amazon-q--temp-files)
+    (when (file-exists-p file)
+      (delete-file file)))
+  (setq amazon-q--temp-files nil)
+  (message "Amazon Q temporary files cleaned up"))
 
 (defun amazon-q-ask-about-current-function (question)
   "Ask Amazon Q a specific question about the current function."
   (interactive "sQuestion about this function: ")
-  (let ((bounds (bounds-of-thing-at-point 'defun)))
+  (let ((q-buffer "*Amazon Q Interactive*")
+        (bounds (bounds-of-thing-at-point 'defun))
+        (temp-file nil))
     (if bounds
         (let ((function-content (buffer-substring-no-properties
                                  (car bounds) (cdr bounds))))
-          (amazon-q--send-content
-           (format "%s\n\n%s" function-content question)
-           "Please review this function and answer my question:"))
+          ;; Create temp file and write function content
+          (setq temp-file (make-temp-file "amazon-q-content-" nil ".txt"))
+          ;; Track the temp file
+          (push temp-file amazon-q--temp-files)
+          ;; Write content to temp file
+          (with-temp-file temp-file
+            (insert function-content))
+          ;; Check if Q session exists
+          (if (get-buffer q-buffer)
+              (with-current-buffer q-buffer
+                ;; Go to the end of the buffer
+                (goto-char (point-max))
+                ;; Send a combined instruction to read the file and answer the question
+                (insert (format "Read this file: %s and answer this question: %s"
+                                temp-file question))
+                (comint-send-input)
+                ;; Switch to the Q buffer
+                (pop-to-buffer q-buffer))
+            ;; If no session exists, show warning
+            (message "No Amazon Q session found. Please run amazon-q-interactive first.")))
       (message "No function definition found at point"))))
+
 
 ;; Define the minor mode for Amazon Q integration
 (define-minor-mode amazon-q-mode
@@ -152,6 +242,9 @@
 (define-globalized-minor-mode global-amazon-q-mode
   amazon-q-mode
   (lambda () (amazon-q-mode 1)))
+
+;; Add hook to clean up temp files when Emacs exits
+(add-hook 'kill-emacs-hook 'amazon-q-cleanup-temp-files)
 
 (provide 'q-chat)
 ;;; q-chat.el ends here
