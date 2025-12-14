@@ -27,7 +27,7 @@
   "Customization variables for Amazon Q Chat integration."
   :group 'emacs)
 
-(defcustom amz-q-chat-cli-default-session-args '("q" "chat")
+(defcustom amz-q-chat-cli-default-session-args '("kiro-cli" "chat")
   "Command and arguments to run to start the Q chat session in a terminal."
   :group 'amz-q-chat
   :type '(repeat string))
