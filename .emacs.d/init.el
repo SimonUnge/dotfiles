@@ -13,8 +13,6 @@
 
 ;; Basic settings that should be loaded immediately
 (menu-bar-mode -1)
-(setq backup-directory-alist `(("." . "~/.emacs.d/.saves")))
-(setq create-lockfiles nil)
 (setq-default indent-tabs-mode nil)
 
 ;; Load core modules
@@ -23,6 +21,7 @@
 (require 'init-ui)
 (require 'init-editing)
 (require 'init-erlang)
+(require 'init-scala)
 (require 'init-org)
 (require 'init-amazon-q)
 
@@ -35,7 +34,8 @@
  '(Man-notify-method 'pushy)
  '(org-agenda-files nil)
  '(package-selected-packages
-   '(exec-path-from-shell use-package format-all org-tree-slide which-key helm-lsp lsp-origami lsp-ui yasnippet lsp-mode markdown-mode ag magit gruvbox-theme iedit tabbar helm project-explorer rainbow-delimiters projectile rainbow-identifiers rainbow-mode plantuml-mode docbook-snippets docbook buffer-expose groovy-mode elixir-mode elixir-yasnippets py-autopep8 idomenu pylint erlang yaml-mode mew)))
+   '(erlang exec-path-from-shell markdown-mode markdown-preview-eww
+            org-tree-slide sbt-mode scala-mode)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

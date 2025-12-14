@@ -55,8 +55,8 @@ session.")
 (cl-defstruct (amz-q-chat-session
                (:constructor amz-q-chat-session/make)
                (:copier amz-q-chat-session/copy))
-  (name :type string)
-  (command-words :type (list string)))
+  (name nil :type string)
+  (command-words nil :type (list string)))
 
 (defcustom amz-q-chat-session-generators nil
   "Hook-with-args used to create q-chat sessions.

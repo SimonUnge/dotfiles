@@ -10,8 +10,12 @@
 ;; Customize popup behavior to use normal window splits
 (setq amz-q-chat-popup-function 'pop-to-buffer)
 
-;; Explicitly enable amazon-q-mode
+;; Explicitly enable amazon-q-mode globally
 (global-amazon-q-mode 1)
+
+;; Also enable it in the current buffer if we're already in one
+(when (buffer-file-name)
+  (amazon-q-mode 1))
 
 ;; Provide this file as a feature
 (provide 'init-amazon-q)

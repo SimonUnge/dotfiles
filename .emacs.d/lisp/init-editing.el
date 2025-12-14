@@ -9,7 +9,6 @@
 (auto-fill-mode -1)                  ;; Disable auto-fill mode globally
 
 ;; File handling
-(setq backup-directory-alist `(("." . "~/.emacs.d/.saves")))
 (setq create-lockfiles nil)
 (setq backup-directory-alist `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))

@@ -6,6 +6,7 @@
 
 ;; Erlang mode setup
 (use-package erlang
+  :defer t
   :mode (("\\.erl\\'" . erlang-mode)
          ("\\.hrl\\'" . erlang-mode))
   :config
