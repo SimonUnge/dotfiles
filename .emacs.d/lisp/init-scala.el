@@ -20,7 +20,15 @@
   (setq sbt:program-options '("-Dsbt.supershell=false")))
 
 (use-package eglot
-  :hook (scala-mode . eglot-ensure))
+  :hook ((scala-mode . eglot-ensure)
+         (scala-mode . (lambda ()
+                         (add-hook 'before-save-hook 'eglot-format-buffer nil t))))
+  :config
+  (setq eglot-sync-connect nil)  ; Don't block Emacs waiting for LSP
+  (setq eglot-connect-timeout 60) ; Longer timeout for large projects
+  (setq eglot-events-buffer-config '(:size 0)) ; Disable events buffer for performance
+  (add-to-list 'eglot-server-programs
+               '(scala-mode . ("metals" "-Xmx6G"))))
 
 (provide 'init-scala)
 ;;; init-scala.el ends here

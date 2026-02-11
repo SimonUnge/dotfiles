@@ -5,8 +5,8 @@
 ;;
 ;;; Code:
 
-;; Set default directory
-(cd "~/")
+;; Performance tuning
+(setq gc-cons-threshold 100000000) ; 100MB - reduce GC pauses
 
 ;; Add lisp directory to load path
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
@@ -23,7 +23,7 @@
 (require 'init-erlang)
 (require 'init-scala)
 (require 'init-org)
-(require 'init-amazon-q)
+;;(require 'init-amazon-q-lsp)
 
 ;; Custom variables - kept in init.el
 (custom-set-variables
@@ -32,10 +32,11 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(Man-notify-method 'pushy)
- '(org-agenda-files nil)
+ '(org-agenda-files '("~/org/"))
  '(package-selected-packages
-   '(erlang exec-path-from-shell markdown-mode markdown-preview-eww
-            org-tree-slide sbt-mode scala-mode)))
+   '(ag agent-shell cond-let erlang exec-path-from-shell magit
+        markdown-mode markdown-preview-eww org-tree-slide sbt-mode
+        scala-mode vterm with-editor)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

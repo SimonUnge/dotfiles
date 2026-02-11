@@ -50,8 +50,28 @@
 
 ;; Global keybindings
 (global-set-key (kbd "C-c c") 'org-capture)
+(global-set-key (kbd "C-c w") 'org-journal-goto-today)
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
+
+;;; Work Journal
+(defun org-journal-goto-today ()
+  "Go to today's entry in work journal, creating week if needed."
+  (interactive)
+  (let* ((week (format-time-string "%V"))
+         (day (format-time-string "%A"))
+         (file "~/org/work-journal.org"))
+    (find-file file)
+    (goto-char (point-min))
+    (if (re-search-forward (format "^\\*\\* Week %s$" week) nil t)
+        (progn
+          (re-search-forward (format "^\\*\\*\\* %s$" day) nil t)
+          (org-end-of-subtree))
+      ;; Week doesn't exist, create it
+      (goto-char (point-max))
+      (insert (format "\n** Week %s\n*** Monday\n*** Tuesday\n*** Wednesday\n*** Thursday\n*** Friday\n" week))
+      (re-search-backward (format "^\\*\\*\\* %s$" day) nil t)
+      (org-end-of-subtree))))
 
 ;;; Capture templates
 (setq org-capture-use-agenda-date nil)
@@ -60,30 +80,11 @@
 
 ;; Project-specific templates
 (defvar org-project-capture-templates
-  '(("p" "RabbitMQ Streams Project Entry" entry
-     (file+datetree "~/org/rmq-tiered-storage.org")
-     "* %U - Daily Update
-** Technical Decisions
-   - *Decision made:* %?
-   - *Alternatives considered:*
-   - *Rationale:*
-   - *Impact:*
-
-** Challenges Encountered
-   - *Challenge:*
-   - *Solution attempted:*
-   - *Outcome:*
-   - *Lessons learned:*
-
-** Performance Metrics
-   - *Current metrics:*
-   - *Improvements observed:*
-   - *Areas needing attention:*
-
-** Collaboration Notes
-   - *Meetings:*
-   - *Cross-team interactions:*
-   - *Feedback received:* "))
+  '(("p" "Project note" entry
+     (file+headline (lambda () (read-file-name "Project file: " "~/org/"))
+                    "Notes")
+     "* %U %?\n:Created: %T\n"
+     :empty-lines 0))
   "Project-specific capture templates.")
 
 ;; General templates
@@ -91,6 +92,10 @@
   '(("g" "General To-Do"
      entry (file+headline "~/org/todos.org" "General Tasks")
      "* TODO [#B] %?\n:Created: %T\n "
+     :empty-lines 0)
+    ("i" "Inbox (quick capture)"
+     entry (file+headline "~/org/inbox.org" "Inbox")
+     "* %?\n:Created: %T\n"
      :empty-lines 0)
     ("m" "Meeting"
      entry (file+datetree "~/org/meetings.org")

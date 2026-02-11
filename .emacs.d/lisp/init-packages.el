@@ -11,6 +11,10 @@
 ;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (package-initialize)
 
+;; Local packages (not on MELPA)
+(add-to-list 'load-path (expand-file-name "site-lisp/amz-q-macs" user-emacs-directory))
+(add-to-list 'load-path (expand-file-name "site-lisp/lsp-multi" user-emacs-directory))
+
 ;; Install use-package if not already installed
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)

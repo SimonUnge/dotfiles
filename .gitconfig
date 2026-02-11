@@ -7,7 +7,7 @@
 [user]
 	name = Simon Unge
 	email = simunge@amazon.com
-	signingkey = /Users/simunge/.ssh/id_ed25519.pub
+	signingkey = 816B87E946ABF7A56B85C1C5BF83F3CFCDD9E211
 
 [push]
 	default = simple
@@ -22,6 +22,8 @@ l     = log --date-order --date='format:%y-%m-%d %H:%M' --pretty='format:%x09%C(
 [init]
 	defaultBranch = main
 [gpg]
-	format = ssh
+	format = openpgp
 [commit]
 	gpgsign = true
+[core]
+	editor = emacs
