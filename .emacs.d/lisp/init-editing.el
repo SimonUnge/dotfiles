@@ -27,6 +27,9 @@
 (add-hook 'python-mode-hook (lambda ()
                               (auto-fill-mode 0)))
 
+;; Navigation
+(global-set-key (kbd "C-c j") 'avy-goto-char-timer)
+
 ;; Provide this file as a feature
 (provide 'init-editing)
 ;;; init-editing.el ends here
