@@ -7,8 +7,19 @@
 ;; Basic UI settings
 (menu-bar-mode -1)                  ;; Disable menu bar
 (show-paren-mode t)                 ;; Highlight matching parentheses
-(ido-mode t)                        ;; Enable interactive do mode
+;; (ido-mode t)                     ;; Replaced by vertico below
 (electric-indent-mode -1)           ;; Disable electric indent
+
+;; Minibuffer completion
+(use-package vertico
+  :init (vertico-mode))
+
+(use-package orderless
+  :custom
+  (completion-styles '(orderless basic)))
+
+(use-package marginalia
+  :init (marginalia-mode))
 
 ;; Whitespace visualization
 (use-package whitespace

@@ -23,6 +23,7 @@
 (require 'init-erlang)
 (require 'init-scala)
 (require 'init-org)
+(require 'init-search)
 ;;(require 'init-amazon-q-lsp)
 
 ;; Custom variables - kept in init.el
@@ -34,9 +35,9 @@
  '(Man-notify-method 'pushy)
  '(org-agenda-files '("~/org/"))
  '(package-selected-packages
-   '(ag agent-shell cond-let erlang exec-path-from-shell magit
-        markdown-mode markdown-preview-eww org-tree-slide sbt-mode
-        scala-mode vterm with-editor)))
+   '(avy company compat erlang exec-path-from-shell git-link magit
+         marginalia markdown-mode orderless org-tree-slide rg sbt-mode
+         scala-mode vertico)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
