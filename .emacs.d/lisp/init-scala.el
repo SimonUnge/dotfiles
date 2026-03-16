@@ -28,7 +28,7 @@
   (setq eglot-connect-timeout 60) ; Longer timeout for large projects
   (setq eglot-events-buffer-config '(:size 0)) ; Disable events buffer for performance
   (add-to-list 'eglot-server-programs
-               '(scala-mode . ("metals" "-Xmx6G"))))
+               '(scala-mode . ("metals" "-J-Xmx6G" "-J-XX:+UseG1GC" "-J-XX:+UseStringDeduplication"))))
 
 (provide 'init-scala)
 ;;; init-scala.el ends here
